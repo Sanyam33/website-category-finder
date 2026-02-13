@@ -56,6 +56,10 @@ async def extract_website_text_async(url: str) -> str:
 # --- 3. FastAPI App ---
 app = FastAPI(title="Website Categorizer")
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the Website Categorizer API"}
+
 @app.post("/api/v1/categorize", response_model=CategoryResponse)
 async def categorize_website(input_data: UrlInput):
     # 1. Scraping (Asynchronous)
