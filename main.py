@@ -29,7 +29,7 @@ class UrlInput(BaseModel):
 
 # --- 2. Async Content Extractor ---
 async def extract_website_text_async(url: str) -> str:
-    # We use a context manager for the client to handle connections efficiently
+    
     async with httpx.AsyncClient(timeout=10.0, follow_redirects=True) as client:
         try:
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -57,8 +57,17 @@ async def extract_website_text_async(url: str) -> str:
 app = FastAPI(title="Website Categorizer")
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "Welcome to the Website Categorizer API"}
+
+@app.get("/help")
+def help():
+    return {
+        "route": "POST /api/v1/categorize",
+        "example_payload": {
+            "url": "https://www.google.com"
+        }
+    }
 
 @app.post("/api/v1/categorize", response_model=CategoryResponse)
 async def categorize_website(input_data: UrlInput):
